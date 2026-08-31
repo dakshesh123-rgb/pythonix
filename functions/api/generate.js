@@ -24,7 +24,7 @@ export async function onRequestPost(context) {
             return Response.json({ error: "Prompt too long (max 50,000 characters)" }, { status: 400 });
         }
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
         const payload = {
             contents: [{ parts: [{ text: prompt }] }]
         };

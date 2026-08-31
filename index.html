@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythonix - AI Code Converter</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Drawflow -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+    
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-ocean.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    
+    <!-- Marked (for Markdown rendering) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-slate-200 h-screen flex flex-col font-sans overflow-hidden">
+    
+    <!-- Header -->
+    <header class="p-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center font-extrabold text-white text-sm" style="background: linear-gradient(135deg, #667eea, #764ba2); box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                Px
+            </div>
+            <div>
+                <h1 class="text-xl font-extrabold tracking-tight text-white">Pythonix <span class="font-medium text-sm ml-1" style="background: linear-gradient(90deg, #f093fb, #667eea); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Code Synthesizer</span></h1>
+                <p class="text-xs" style="color: rgba(255,255,255,0.35); margin-top: -2px;">✨ Turn ideas into code, magically</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="px-3 py-1.5 text-xs font-semibold rounded-full flex items-center gap-2 transition-all duration-300" style="background: rgba(67, 233, 123, 0.12); color: #43e97b; border: 1px solid rgba(67, 233, 123, 0.25);">
+                <span class="w-2 h-2 rounded-full transition-colors animate-pulse" style="background: #43e97b;"></span>
+                <span>Secure Edge Backend ✓</span>
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="flex-1 flex overflow-hidden p-4 gap-4">
+        
+        <!-- Left Panel: Input Area -->
+        <section class="w-1/2 flex flex-col glass-panel overflow-hidden relative transition-all duration-300">
+            
+            <!-- Tabs -->
+            <div class="flex bg-slate-900/50 p-2 gap-2 border-b border-slate-700">
+                <button class="tab-btn active" data-tab="pseudocode">Pseudocode</button>
+                <button class="tab-btn" data-tab="algorithm">Algorithm</button>
+                <button class="tab-btn" data-tab="flowchart">Flowchart Studio</button>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div class="flex-1 relative overflow-hidden">
+                <div id="pseudocode" class="tab-content active">
+                    <textarea id="pseudocode-input" class="w-full h-full bg-slate-800 text-slate-200 p-6 focus:outline-none resize-none font-mono" placeholder="Write your pseudocode here..."></textarea>
+                </div>
+                
+                <div id="algorithm" class="tab-content">
+                    <textarea id="algorithm-input" class="w-full h-full bg-slate-800 text-slate-200 p-6 focus:outline-none resize-none font-mono" placeholder="Write your algorithm steps here..."></textarea>
+                </div>
+                
+                <div id="flowchart" class="tab-content flex-col">
+                    <div class="p-3 bg-slate-700/50 border-b border-slate-600 flex gap-2 overflow-x-auto flowchart-tools">
+                        <div class="drag-item node-start" draggable="true" ondragstart="drag(event)" data-node="start">Start/End</div>
+                        <div class="drag-item node-process" draggable="true" ondragstart="drag(event)" data-node="process">Process</div>
+                        <div class="drag-item node-decision" draggable="true" ondragstart="drag(event)" data-node="decision">Decision</div>
+                        <div class="drag-item node-io" draggable="true" ondragstart="drag(event)" data-node="io">Input/Output</div>
+                        <div class="flex-1"></div>
+                        <button onclick="editor.clearModuleSelected()" class="px-3 py-1 bg-red-500/20 text-red-400 hover:bg-red-500/40 rounded text-sm transition-colors">Clear All</button>
+                    </div>
+                    <div id="drawflow" class="flex-1 bg-slate-900/30" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+            
+            <!-- Convert Button Action Bar -->
+            <div class="p-4 bg-slate-800 border-t border-slate-700 flex justify-between items-center">
+                <div id="loading-indicator" class="hidden flex items-center gap-3 text-blue-400 font-medium">
+                    <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Synthesizing Python...
+                </div>
+                <div class="flex-1"></div>
+                <button id="convert-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Generate Code
+                </button>
+            </div>
+        </section>
+        
+        <!-- Right Panel: Code & Output -->
+        <section class="w-1/2 flex flex-col gap-4">
+            
+            <!-- Python Editor -->
+            <div class="flex-1 bg-slate-800 rounded-xl shadow-xl border border-slate-700 overflow-hidden flex flex-col relative group">
+                <div class="bg-slate-900/50 p-3 border-b border-slate-700 flex justify-between items-center">
+                    <div class="flex items-center gap-2 text-slate-300 font-semibold text-sm">
+                        <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        main.py
+                    </div>
+                    <button id="run-btn" disabled class="bg-green-600 hover:bg-green-500 disabled:opacity-50 disabled:hover:bg-green-600 text-white text-sm font-semibold py-1.5 px-4 rounded shadow-lg shadow-green-600/30 transition-all active:scale-95 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span id="run-btn-text">Initializing Engine...</span>
+                    </button>
+                </div>
+                
+                <div class="flex-1 relative">
+                    <textarea id="python-code"></textarea>
+                    
+                    <!-- Explain Tooltip -->
+                    <div id="explain-tooltip" class="absolute hidden z-50">
+                        <button id="explain-btn" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-1.5 px-3 rounded-md shadow-xl shadow-purple-900/50 flex items-center gap-1 transition-transform hover:scale-105 active:scale-95 border border-purple-400/30">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Explain AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Output Console -->
+            <div class="h-1/3 bg-[#1e1e1e] rounded-xl shadow-xl border border-slate-700 overflow-hidden flex flex-col">
+                <div class="bg-slate-900 p-2 px-4 border-b border-slate-700 flex justify-between items-center text-xs font-mono text-slate-400">
+                    <span>Terminal</span>
+                    <button onclick="document.getElementById('output-console').textContent=''" class="hover:text-white transition-colors">Clear</button>
+                </div>
+                <pre id="output-console" class="flex-1 p-4 font-mono text-sm text-green-400 overflow-y-auto whitespace-pre-wrap"></pre>
+            </div>
+            
+        </section>
+    </main>
+
+    <!-- Modal for AI Explanations -->
+    <div id="explanation-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] transform scale-95 transition-transform duration-300" id="modal-container">
+            <div class="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-800/80 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <h2 id="modal-title" class="text-xl font-bold text-white">AI Analysis</h2>
+                </div>
+                <button class="close-modal text-slate-400 hover:text-white transition-colors p-1 rounded-full hover:bg-slate-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="explanation-content" class="p-6 overflow-y-auto flex-1 text-slate-300 prose prose-invert max-w-none">
+                Loading...
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+/* ============================================
+   PYTHONIX — Sleek Playful Colorful Theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* === Base & Background === */
+body {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(120, 80, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 100, 200, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(80, 200, 255, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* === Glassmorphism Panels === */
+.glass-panel,
+section.w-1\/2,
+.flex-1.bg-slate-800 {
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover,
+section.w-1\/2:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(100, 100, 255, 0.1);
+}
+
+/* === Header === */
+header {
+    background: rgba(15, 12, 41, 0.85) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid transparent !important;
+    border-image: linear-gradient(90deg, #f093fb, #667eea, #4facfe, #43e97b, #fa709a) 1 !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* Logo Badge — Gradient */
+.brand-badge,
+header .w-8.h-8 {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+    border-radius: 8px;
+    animation: badgePulse 3s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+    50% { box-shadow: 0 4px 25px rgba(102, 126, 234, 0.7); }
+}
+
+/* Title Gradient Text */
+header h1 {
+    background: linear-gradient(90deg, #fff, #e0e0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+header h1 span {
+    background: linear-gradient(90deg, #f093fb, #667eea) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* === Tabs — Pill Style === */
+.tab-content {
+    display: none;
+    height: 100%;
+}
+.tab-content.active {
+    display: flex;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
+    transform: translateY(-1px);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25)) !important;
+    color: #b4a7ff !important;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.2), inset 0 0 0 1px rgba(102, 126, 234, 0.3);
+}
+
+/* Tab bar background */
+.flex.bg-slate-900\/50 {
+    background: rgba(0, 0, 0, 0.25) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* === Textareas === */
+textarea {
+    background: rgba(10, 10, 30, 0.6) !important;
+    border: none;
+    color: #e0e0ff;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+textarea:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 1px rgba(102, 126, 234, 0.3);
+}
+
+/* === CodeMirror === */
+.CodeMirror {
+    height: 100% !important;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    background: rgba(8, 6, 20, 0.9) !important;
+    border-radius: 0 0 16px 16px;
+}
+
+/* === Generate / Convert Button — Gradient + Shimmer === */
+#convert-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 12px 28px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.35);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#convert-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.6s ease;
+}
+
+#convert-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.5) !important;
+}
+
+#convert-btn:hover::before {
+    left: 100%;
+}
+
+#convert-btn:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+/* === Run Button — Green Gradient === */
+#run-btn {
+    background: linear-gradient(135deg, #43e97b, #38f9d7) !important;
+    color: #0a1628 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 3px 15px rgba(67, 233, 123, 0.3);
+    transition: all 0.3s ease;
+}
+
+#run-btn:hover:not(:disabled) {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 5px 25px rgba(67, 233, 123, 0.45) !important;
+}
+
+#run-btn:disabled {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: none;
+}
+
+/* === Explain AI Button — Pink Gradient === */
+#explain-btn {
+    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 3px 15px rgba(240, 147, 251, 0.35);
+    transition: all 0.3s ease;
+}
+
+#explain-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 20px rgba(240, 147, 251, 0.5) !important;
+}
+
+/* === Output Console === */
+.h-1\/3.bg-\[\#1e1e1e\] {
+    background: rgba(8, 6, 20, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-left: 3px solid transparent !important;
+    border-image: linear-gradient(180deg, #43e97b, #4facfe, #f093fb) 1 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+#output-console {
+    color: #43e97b !important;
+    text-shadow: 0 0 8px rgba(67, 233, 123, 0.15);
+}
+
+/* Console header */
+.bg-slate-900.p-2.px-4 {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* === API Status Badge === */
+#api-status-badge {
+    border-radius: 20px !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+/* Settings gear */
+button[title="Settings"] {
+    transition: all 0.3s ease;
+}
+
+button[title="Settings"]:hover {
+    transform: rotate(60deg);
+    color: #b4a7ff !important;
+}
+
+/* === Modals — Glassmorphism === */
+#explanation-modal .bg-slate-800,
+#apikey-modal .bg-slate-800,
+#modal-container,
+#apikey-modal-container {
+    background: rgba(20, 18, 50, 0.92) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Modal header border */
+#modal-container .border-b,
+#apikey-modal-container .border-b {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* API Key Input */
+#api-key-input {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease;
+}
+
+#api-key-input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
+}
+
+/* Save Key Button */
+#apikey-modal button[onclick="saveApiKey()"] {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 3px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+#apikey-modal button[onclick="saveApiKey()"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.45) !important;
+}
+
+/* Get free key link */
+#apikey-modal a {
+    color: #4facfe !important;
+    text-decoration: none;
+    background: linear-gradient(90deg, #4facfe, #43e97b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+#apikey-modal a:hover {
+    text-decoration: underline;
+}
+
+/* === Drawflow Dark Theme Override === */
+#drawflow {
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 30, 0.4) !important;
+}
+
+.drawflow .drawflow-node {
+    background: rgba(20, 18, 50, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    color: #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.drawflow .drawflow-node:hover {
+    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 25px rgba(102, 126, 234, 0.15);
+}
+
+.drawflow .drawflow-node.selected {
+    border: 1px solid rgba(102, 126, 234, 0.6);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.drawflow .drawflow-node .title-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px 12px 0 0;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 13px;
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    color: #b4a7ff;
+}
+
+.drawflow .drawflow-node .box {
+    padding: 12px;
+}
+
+.drawflow .drawflow-node input,
+.drawflow .drawflow-node textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+    font-size: 13px;
+    transition: border-color 0.3s ease;
+}
+
+.drawflow .drawflow-node input:focus,
+.drawflow .drawflow-node textarea:focus {
+    outline: none;
+    border-color: rgba(102, 126, 234, 0.4);
+}
+
+.drawflow .connection .main-path {
+    stroke: url(#connectionGradient);
+    stroke: #667eea;
+    stroke-width: 3px;
+}
+
+.drawflow-delete {
+    background: linear-gradient(135deg, #f5576c, #ff6b6b) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+/* Drag items in flowchart toolbar */
+.drag-item {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px !important;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.drag-item:hover {
+    background: rgba(102, 126, 234, 0.15) !important;
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #b4a7ff;
+    transform: translateY(-1px);
+}
+
+/* === Loading Indicator === */
+#loading-indicator {
+    color: #b4a7ff !important;
+}
+
+#loading-indicator svg {
+    color: #667eea !important;
+}
+
+/* === Markdown / Prose overrides === */
+.prose pre {
+    background-color: rgba(8, 6, 20, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+}
+
+.prose code {
+    color: #b4a7ff !important;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+/* === Editor panel headers === */
+.bg-slate-900\/50.p-3 {
+    background: rgba(0, 0, 0, 0.25) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* main.py label */
+.bg-slate-900\/50.p-3 .text-blue-400 {
+    color: #667eea !important;
+}
+
+/* === Convert action bar === */
+.p-4.bg-slate-800.border-t {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* === Flowchart toolbar === */
+.p-3.bg-slate-700\/50 {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Clear All button in flowchart */
+.bg-red-500\/20 {
+    background: rgba(245, 87, 108, 0.15) !important;
+    color: #f5576c !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease;
+}
+
+.bg-red-500\/20:hover {
+    background: rgba(245, 87, 108, 0.3) !important;
+}
+
+/* === Scrollbars === */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7b93ff, #8b5fc7);
+}
+
+/* === Selection === */
+::selection {
+    background: rgba(102, 126, 234, 0.3);
+    color: #fff;
+}
+
+/* === Animations === */
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* === Responsive fine-tuning === */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column !important;
+    }
+    section.w-1\/2 {
+        width: 100% !important;
+    }
+}
